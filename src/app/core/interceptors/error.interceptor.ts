@@ -3,6 +3,7 @@ import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, catchError, filter, switchMap, take, throwError } from 'rxjs';
 import { AuthService } from '../services/auth.service';
+import { SILENCE_ERRORS } from './http-context.tokens';
 
 let isRefreshing = false;
 const refreshTokenSubject: BehaviorSubject<boolean | null> = new BehaviorSubject<boolean | null>(null);
@@ -13,6 +14,10 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
 
     return next(req).pipe(
         catchError((error: HttpErrorResponse) => {
+            if (req.context.get(SILENCE_ERRORS)) {
+                return throwError(() => error);
+            }
+
             if (error.status === 401 && !req.url.includes('/auth/')) {
                 return handle401Error(req, next, authService, router, error);
             }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
@@ -11,7 +11,8 @@ import { ButtonModule } from 'primeng/button';
   templateUrl: './dashboard.component.html',
 })
 export class DashboardComponent {
-  constructor(public authService: AuthService, private router: Router) { }
+  public readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
 
   logout() {
     this.authService.logout().subscribe(() => {

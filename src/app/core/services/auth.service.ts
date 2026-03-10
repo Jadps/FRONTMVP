@@ -1,9 +1,8 @@
-import { Injectable, signal } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { inject, Injectable, signal } from '@angular/core';
+import { HttpClient, HttpContext } from '@angular/common/http';
 import { catchError, map, Observable, of, switchMap, tap } from 'rxjs';
-
-const baseurl = "https://localhost:44329";
-const version = "v1.0";
+import { environment } from '../../../environments/environment';
+import { SILENCE_ERRORS } from '../interceptors/http-context.tokens';
 
 import { UsuarioDTO } from '../models/usuario.dto';
 export interface LoginCredentials {
@@ -16,11 +15,10 @@ export interface LoginCredentials {
 })
 export class AuthService {
     public currentUser = signal<UsuarioDTO | null>(null);
-
-    constructor(private http: HttpClient) { }
+    private readonly http = inject(HttpClient);
 
     login(credentials: LoginCredentials): Observable<boolean> {
-        return this.http.post<any>(`${baseurl}/api/${version}/auth/login`, credentials, { withCredentials: true }).pipe(
+        return this.http.post<any>(`${environment.apiUrl}/auth/login`, credentials, { withCredentials: true }).pipe(
             switchMap(() => {
                 return this.getProfile();
             }),
@@ -31,7 +29,7 @@ export class AuthService {
         );
     }
     refreshToken(): Observable<boolean> {
-        return this.http.post(`${baseurl}/api/${version}/auth/refresh-token`, {}, { withCredentials: true }).pipe(
+        return this.http.post(`${environment.apiUrl}/auth/refresh-token`, {}, { withCredentials: true }).pipe(
             map(() => true),
             catchError(() => {
                 this.currentUser.set(null);
@@ -41,7 +39,7 @@ export class AuthService {
     }
 
     logout(): Observable<boolean> {
-        return this.http.post(`${baseurl}/api/${version}/auth/logout`, {}, { withCredentials: true }).pipe(
+        return this.http.post(`${environment.apiUrl}/auth/logout`, {}, { withCredentials: true }).pipe(
             tap(() => {
                 this.currentUser.set(null);
             }),
@@ -51,7 +49,10 @@ export class AuthService {
     }
 
     getProfile(): Observable<boolean> {
-        return this.http.get<UsuarioDTO>(`${baseurl}/api/${version}/usuarios/me`, { withCredentials: true }).pipe(
+        return this.http.get<UsuarioDTO>(`${environment.apiUrl}/usuarios/me`, {
+            withCredentials: true,
+            context: new HttpContext().set(SILENCE_ERRORS, true)
+        }).pipe(
             tap((user) => {
                 this.currentUser.set(user);
             }),
