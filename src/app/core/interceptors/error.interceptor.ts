@@ -5,9 +5,6 @@ import { BehaviorSubject, Observable, catchError, filter, switchMap, take, throw
 import { AuthService } from '../services/auth.service';
 import { SILENCE_ERRORS } from './http-context.tokens';
 
-let isRefreshing = false;
-const refreshTokenSubject: BehaviorSubject<boolean | null> = new BehaviorSubject<boolean | null>(null);
-
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {
     const authService = inject(AuthService);
     const router = inject(Router);
@@ -27,31 +24,31 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
 };
 
 const handle401Error = (req: HttpRequest<any>, next: HttpHandlerFn, authService: AuthService, router: Router, originalError: HttpErrorResponse): Observable<HttpEvent<any>> => {
-    if (!isRefreshing) {
-        isRefreshing = true;
-        refreshTokenSubject.next(null);
+    if (!authService.isRefreshing()) {
+        authService.isRefreshing.set(true);
+        authService.refreshTokenSubject.next(null);
 
         return authService.refreshToken().pipe(
             switchMap((success) => {
-                isRefreshing = false;
+                authService.isRefreshing.set(false);
                 if (success) {
-                    refreshTokenSubject.next(true);
+                    authService.refreshTokenSubject.next(true);
                     return next(req);
                 } else {
-                    refreshTokenSubject.next(false);
+                    authService.refreshTokenSubject.next(false);
                     router.navigate(['/login']);
                     return throwError(() => originalError);
                 }
             }),
             catchError((err) => {
-                isRefreshing = false;
-                refreshTokenSubject.next(false);
+                authService.isRefreshing.set(false);
+                authService.refreshTokenSubject.next(false);
                 router.navigate(['/login']);
                 return throwError(() => err);
             })
         );
     } else {
-        return refreshTokenSubject.pipe(
+        return authService.refreshTokenSubject.pipe(
             filter(result => result !== null),
             take(1),
             switchMap((success) => {

@@ -1,6 +1,6 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { HttpClient, HttpContext } from '@angular/common/http';
-import { catchError, map, Observable, of, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, catchError, map, Observable, of, switchMap, tap } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { SILENCE_ERRORS } from '../interceptors/http-context.tokens';
 
@@ -15,6 +15,8 @@ export interface LoginCredentials {
 })
 export class AuthService {
     public currentUser = signal<UsuarioDTO | null>(null);
+    public isRefreshing = signal<boolean>(false);
+    public refreshTokenSubject = new BehaviorSubject<boolean | null>(null);
     private readonly http = inject(HttpClient);
 
     login(credentials: LoginCredentials): Observable<boolean> {
