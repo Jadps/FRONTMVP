@@ -5,14 +5,20 @@ export const routes: Routes = [
     {
         path: 'login',
         title: 'Iniciar Sesión | MVP',
-        loadComponent: () => import('./features/auth/login/login.component').then(m => m.LoginComponent)
+        loadComponent: () => import('./features/auth/login/login').then(m => m.LoginComponent)
     },
     {
-        path: 'dashboard',
-        title: 'Dashboard | MVP',
-        loadComponent: () => import('./features/dashboard/dashboard.component').then(m => m.DashboardComponent),
-        canActivate: [authGuard]
+        path: '',
+        loadComponent: () => import('./layout/app.layout').then(m => m.AppLayout),
+        canActivate: [authGuard],
+        children: [
+            {
+                path: 'dashboard',
+                title: 'Dashboard | MVP',
+                loadComponent: () => import('./features/dashboard/dashboard').then(m => m.DashboardComponent)
+            },
+            { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
+        ]
     },
-    { path: '', redirectTo: 'login', pathMatch: 'full' },
     { path: '**', redirectTo: 'login' }
 ];

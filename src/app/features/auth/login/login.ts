@@ -16,7 +16,7 @@ import { AuthService } from '../../../core/services/auth.service';
         PasswordModule,
         ButtonModule,
     ],
-    templateUrl: './login.component.html',
+    templateUrl: './login.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginComponent {
