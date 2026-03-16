@@ -9,6 +9,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
   standalone: true,
   imports: [CommonModule, ButtonModule, ProgressSpinnerModule],
   templateUrl: './dashboard.html',
+  styleUrl: './dashboard.css',
 })
 export class DashboardComponent {
   public readonly authService = inject(AuthService);
