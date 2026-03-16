@@ -49,8 +49,7 @@ export class AuthService {
 
     getProfile(): Observable<boolean> {
         return this.http.get<UserDto>(`${environment.apiUrl}/users/me`, {
-            withCredentials: true,
-            context: new HttpContext().set(SILENCE_ERRORS, true)
+            withCredentials: true
         }).pipe(
             tap((user) => {
                 this.currentUser.set(user);
