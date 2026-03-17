@@ -1,4 +1,4 @@
 export const environment = {
     production: true,
-    apiUrl: 'https://[IP_ADDRESS]/api/v1.0'
+    apiUrl: 'https://backmvp.onrender.com/api/v1.0'
 };
