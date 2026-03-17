@@ -13,7 +13,12 @@ import { AuthService } from './core/services/auth.service';
 
 export function initializeApp() {
   const authService = inject(AuthService);
-  return () => firstValueFrom(authService.getProfile()).catch(() => true);
+  return () => {
+    if (authService.isAuthenticatedHint()) {
+      return firstValueFrom(authService.getProfile()).catch(() => true);
+    }
+    return Promise.resolve(true);
+  };
 }
 
 export const appConfig: ApplicationConfig = {
