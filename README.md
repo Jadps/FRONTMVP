@@ -1,59 +1,44 @@
-# FRONTMVP
+# SaaS MVP Frontend (Panel de Control)
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.1.
+Aplicación Single Page Application (SPA) para la gestión del MVP SaaS. Diseñada para consumir la API REST del backend con un enfoque en la velocidad y la experiencia de usuario.
 
-## Development server
+🚀 **Demo en Vivo:** [https://frontmvp-ashy.vercel.app](https://frontmvp-ashy.vercel.app)
 
-To start a local development server, run:
+## ⚙️ Stack Tecnológico
 
-```bash
-ng serve
-```
+* **Framework:** Angular 
+* **Lenguaje:** TypeScript
+* **UI / Componentes:** PrimeNG / PrimeIcons (implícito en el diseño)
+* **Autenticación:** Interceptores de JWT y protección de rutas mediante Guards
+* **Infraestructura/Despliegue:** Vercel (con `vercel.json` configurado para enrutamiento SPA)
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## 🚀 Características Principales
 
-## Code scaffolding
+* **Autenticación Segura:** Login interactivo manejando tokens JWT y mitigación CORS/CSRF.
+* **Dashboard Dinámico:** Interfaz principal para visualizar métricas, crecimiento y estado de seguridad.
+* **Soporte Multi-Tenant:** Arquitectura preparada para manejar datos aislados por empresa.
+* **Gestión de Accesos:** Sistema de roles y módulos basado en la respuesta del backend.
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## 🛠️ Instalación y Configuración Local
 
-```bash
-ng generate component component-name
-```
+### Requisitos Previos
+* [Node.js](https://nodejs.org/) (LTS recomendado)
+* [Angular CLI](https://angular.io/cli) (`npm install -g @angular/cli`)
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+### Ejecución
 
-```bash
-ng generate --help
-```
+1. Clona el repositorio: `git clone https://github.com/Jadps/FRONTMVP.git`
+2. Instala las dependencias: `npm install`
+3. Configura el entorno:
+   Verifica que el archivo `src/environments/environment.ts` apunte a tu API local (ej. `https://localhost:44329/api/v1.0`).
+4. Inicia el servidor de desarrollo: `ng serve -o`
 
-## Building
+La aplicación se abrirá automáticamente en `http://localhost:4200/`.
 
-To build the project run:
+## 📦 Despliegue a Producción
+
+El proyecto está optimizado para desplegarse en plataformas como Vercel o Netlify. 
+Asegúrate de que el archivo `src/environments/environment.prod.ts` contenga la URL de tu API en producción antes de ejecutar el comando de construcción:
 
 ```bash
 ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
