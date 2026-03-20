@@ -49,4 +49,11 @@ export class LoginComponent {
             },
         });
     }
+
+    fillDemoCredentials(): void {
+        this.loginForm.patchValue({
+            email: 'demo@mail.com',
+            password: 'Demo.2026!',
+        });
+    }
 }

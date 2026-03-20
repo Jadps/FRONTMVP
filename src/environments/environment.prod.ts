@@ -1,4 +1,4 @@
 export const environment = {
     production: true,
-    apiUrl: 'https://backmvp.onrender.com/api/v1.0'
+    apiUrl: 'https://api.alonsodev.online/api/v1.0'
 };
