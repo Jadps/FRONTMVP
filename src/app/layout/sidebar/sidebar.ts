@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { filter } from 'rxjs';
 
 import { AuthService } from '../../core/services/auth.service';
-import { CatalogService } from '../../core/services/catalog.service';
+import { MenuService } from '../../core/services/menu.service';
 import { ModuleDto } from '../../core/models/module.dto';
 
 export interface SidebarModule extends ModuleDto {
@@ -20,7 +20,7 @@ export interface SidebarModule extends ModuleDto {
 })
 export class Sidebar implements OnInit {
   public authService = inject(AuthService);
-  private catalogService = inject(CatalogService);
+  private menuService = inject(MenuService);
   private router = inject(Router);
 
   public menuItems = signal<SidebarModule[]>([]);
@@ -45,14 +45,12 @@ export class Sidebar implements OnInit {
   }
 
   loadMenu() {
-    this.catalogService.getMenuModules().subscribe({
+    this.menuService.loadMenu().subscribe({
       next: (modules) => {
         const mappedModules: SidebarModule[] = modules.map(m => ({ ...m, expanded: false }));
         this.menuItems.set(mappedModules);
-
         this.syncMenuWithUrl(this.router.url);
-      },
-      error: () => this.menuItems.set([])
+      }
     });
   }
 

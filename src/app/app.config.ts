@@ -2,6 +2,7 @@ import { ApplicationConfig, provideBrowserGlobalErrorListeners, APP_INITIALIZER,
 import { provideRouter } from '@angular/router';
 import { provideHttpClient, withInterceptors, withFetch, withXsrfConfiguration } from '@angular/common/http';
 import { providePrimeNG } from 'primeng/config';
+import { MessageService } from 'primeng/api';
 import Aura from '@primeng/themes/aura';
 import { firstValueFrom } from 'rxjs';
 
@@ -23,6 +24,7 @@ export function initializeApp() {
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    MessageService,
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
     provideHttpClient(
