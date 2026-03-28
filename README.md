@@ -1,53 +1,59 @@
-# ✨ MVP Frontend SPA
 
-Welcome to my Single Page Application (SPA) for the MVP. This frontend is carefully crafted to deliver an exceptional, blazing-fast user experience using the Angular ecosystem.
+---
 
-## 🚀 Tech Stack
+## Frontend `README.md`
 
-| Technology | Version | Purpose |
-|------------|---------|---------|
-| **Angular** | `v21` | Core Framework, Reactivity, and Routing |
-| **Tailwind CSS** | `v4` | Utility-first Styling Engine |
-| **PrimeNG** | `v21` | Complex UI Accessible Component Library |
-| **TypeScript** | `v5.x` | Strongly-typed JavaScript |
+```md
+# MVP Frontend
 
-## 🏗 Architectural Choices & Trade-offs
+Frontend SPA for the MVP system.
 
-### Modern Angular: Signals & Standalone Components
-We fully embrace the "Modern Angular" paradigm to ensure a lightweight and performant application:
-- **Standalone Components:** `NgModules` are a thing of the past. Our architecture relies entirely on Standalone Components, resulting in less boilerplate, easier lazy-loading, and highly tree-shakable code.
-- **Signals for Reactivity:** We utilize Angular Signals for fine-grained, glitch-free DOM updates, shifting away from heavy reliance on Zone.js for UI refreshes.
+Built with Angular and kept deliberately simple: components handle UI, services handle data, and shared code stays reusable.
 
-### Design System: PrimeNG 21 + Tailwind CSS v4
-Why combine a heavy component suite with a utility CSS framework?
-- **PrimeNG 21** gives us battle-tested, highly accessible, and complex components out of the box (like DataTables, Calendars, and complex Overlays). This saves hundreds of hours of recreating the wheel.
-- **Tailwind CSS v4** provides a blazing-fast, customized utility engine. We use it to layout the application, handle macro/micro-styling, and effectively customize/theme our PrimeNG components.
-- **Trade-off:** While PrimeNG adds to the overall bundle footprint, v21's modularity ensures we only import precisely what we use. The resulting boost in developer velocity and UI consistency is an indispensable advantage.
+## Badges
 
-### Single Source of Truth: Signals vs. RxJS
-For state management and UI reactivity, **Signals** are our designated "Single Source of Truth." They provide synchronous, entirely predictable state readings directly to the template.
-- **Trade-off:** We do not entirely abandon **RxJS**. Instead, we strictly reserve RxJS for handling asynchronous data streams, complex event handling, and HTTP requests. We convert these streams to Signals at the system boundaries using `toSignal()`. This dramatically lowers the cognitive load by eliminating the need to manage complex subscription lifecycles in our templates.
+![Angular](https://img.shields.io/badge/Angular-21-DD0031?style=flat&logo=angular&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?style=flat&logo=typescript&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/TailwindCSS-4-06B6D4?style=flat&logo=tailwindcss&logoColor=white)
+![PrimeNG](https://img.shields.io/badge/PrimeNG-UI-00C853?style=flat)
 
-### Clean Architecture in the Frontend
-Our frontend file structure maps to Clean Architecture principles to keep components dumb and services smart:
-- **Core/Domain:** Interfaces, global types, and state management.
-- **Infrastructure/Services:** API clients, HTTP Interceptors, and environment logic. Reusable services that fetch and shape data map perfectly to application "repositories".
-- **Features/Pages:** Smart components representing distinct application routable views.
-- **UI/Shared:** Dumb, highly reusable presentational components that rely exclusively on `@Input()` and `@Output()`.
+![Build Status](https://img.shields.io/github/actions/workflow/status/Jadps/BACKMVP/frontend.yml?branch=main&style=flat)
+![Coverage](https://img.shields.io/codecov/c/github/Jadps/BACKMVP?style=flat)
+![Version](https://img.shields.io/github/v/tag/Jadps/BACKMVP?style=flat)
+![License](https://img.shields.io/github/license/Jadps/BACKMVP?style=flat)
 
-By separating API services from presentation logic, we ensure our components remain fully testable and concerned only with UI rendering.
+## Structure
 
-## 🛠 How to Run
+- **core/**  
+  Shared types, global state, and app-wide contracts.
 
-1. **Install Dependencies:**
+- **services/**  
+  API calls, data access, and response shaping.
+
+- **features/**  
+  Route-based pages with application logic.
+
+- **shared/**  
+  Reusable UI components.
+
+## Design choices
+
+- Standalone components instead of NgModules
+- Signals for local and shared state
+- RxJS only where async streams make sense
+- PrimeNG for complex UI
+- Tailwind for layout and styling
+
+## Getting started
+
+### Prerequisites
+
+- Node.js
+- npm
+
+### Setup
+
+1. Install dependencies:
+
    ```bash
    npm install
-   ```
-2. **Start Development Server:**
-   ```bash
-   npm run start
-   # or
-   ng serve
-   ```
-3. **View the Application:**
-   Navigate to `http://localhost:4200/` in your browser. The application will automatically reload if you change any of the source files.
