@@ -9,6 +9,8 @@ import { TextareaModule } from 'primeng/textarea';
 import { DialogModule } from 'primeng/dialog';
 import { RoleManagerService } from './role-manager.service';
 import { TreeNode, SharedModule } from 'primeng/api';
+import { RoleDto } from '../../../core/models/role.dto';
+import { ModuleDto } from '../../../core/models/module.dto';
 
 @Component({
     selector: 'app-role-form-dialog',
@@ -164,7 +166,7 @@ export class RoleFormDialogComponent {
     async onSave() {
         if (this.roleForm.invalid) return;
 
-        const roleData = this.roleForm.value;
+        const roleData = this.roleForm.value as RoleDto;
         if (this.manager.editingRole()) {
             await this.manager.updateRole(roleData);
         } else {
@@ -172,7 +174,7 @@ export class RoleFormDialogComponent {
         }
     }
 
-    private buildTree(modules: any[]): TreeNode[] {
+    private buildTree(modules: ModuleDto[]): TreeNode[] {
         return modules.map(m => ({
             data: {
                 id: m.id,

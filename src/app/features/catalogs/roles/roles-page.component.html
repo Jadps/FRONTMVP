@@ -19,19 +19,39 @@
         </ng-template>
 
         <ng-template pTemplate="body" let-role>
-            <tr>
-                <td class="font-medium">{{ role.name }}</td>
-                <td>{{ role.description }}</td>
-                <td class="text-center">
-                    <button pButton icon="pi pi-pencil" class="p-button-text p-button-rounded"
-                        (click)="onEdit(role)"></button>
+            <tr class="hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors duration-200">
+                <td class="font-medium p-3">
+                    <div class="flex items-center gap-2">
+                        <i class="pi pi-id-card text-blue-500"></i>
+                        {{ role.name }}
+                    </div>
                 </td>
+                <td class="p-3 text-slate-600 dark:text-slate-400">{{ role.description }}</td>
+                <td class="text-center p-3">
+                    <button pButton icon="pi pi-pencil" 
+                        class="p-button-rounded p-button-text p-button-info p-1"
+                        (click)="onEdit(role)"
+                        pTooltip="Editar Rol"
+                        tooltipPosition="left">
+                    </button>
+                </td>
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="loadingbody">
+            <tr *ngFor="let item of [1,2,3,4,5]">
+                <td><p-skeleton width="60%"></p-skeleton></td>
+                <td><p-skeleton width="80%"></p-skeleton></td>
+                <td><p-skeleton shape="circle" size="2rem" styleClass="mx-auto"></p-skeleton></td>
             </tr>
         </ng-template>
 
         <ng-template pTemplate="emptymessage">
             <tr>
-                <td colspan="3" class="text-center p-4 text-slate-500">No se encontraron roles configurados.</td>
+                <td colspan="3" class="text-center p-12">
+                    <i class="pi pi-folder-open text-4xl text-slate-300 mb-3 block"></i>
+                    <span class="text-slate-500">No se encontraron roles configurados.</span>
+                </td>
             </tr>
         </ng-template>
     </p-table>

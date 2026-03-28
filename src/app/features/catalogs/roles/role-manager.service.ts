@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { MessageService } from 'primeng/api';
+import { RoleDto } from '../../../core/models/role.dto';
+import { ModuleDto } from '../../../core/models/module.dto';
 
 @Injectable({
     providedIn: 'root'
@@ -12,14 +14,14 @@ export class RoleManagerService {
     private readonly messageService = inject(MessageService);
     private readonly apiUrl = `${environment.apiUrl}/catalogs`;
 
-    readonly roles = signal<any[]>([]);
-    readonly modules = signal<any[]>([]);
+    readonly roles = signal<RoleDto[]>([]);
+    readonly modules = signal<ModuleDto[]>([]);
     readonly selectedPermissions = signal<Map<string, number>>(new Map());
 
     readonly isTableLoading = signal<boolean>(false);
     readonly isSaving = signal<boolean>(false);
     readonly isDialogVisible = signal<boolean>(false);
-    readonly editingRole = signal<any | null>(null);
+    readonly editingRole = signal<RoleDto | null>(null);
 
     async openNewRoleDialog() {
         this.editingRole.set(null);
@@ -28,12 +30,12 @@ export class RoleManagerService {
         this.isDialogVisible.set(true);
     }
 
-    async openEditRoleDialog(role: any) {
+    async openEditRoleDialog(role: RoleDto) {
         this.editingRole.set(role);
 
         const permissionsMap = new Map<string, number>();
         if (role.permissions) {
-            role.permissions.forEach((p: any) => {
+            role.permissions.forEach((p) => {
                 permissionsMap.set(p.moduleId, p.permission);
             });
         }
@@ -75,11 +77,11 @@ export class RoleManagerService {
             this.modules.set(response.data || response || []);
         } catch (error) {
             this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al cargar módulos' });
-            console.error('Error al cargar módulos:', error);
+            console.error('Error loading modules:', error);
         }
     }
 
-    async createRole(role: any) {
+    async createRole(role: RoleDto) {
         this.isSaving.set(true);
         try {
             const permissions = Array.from(this.selectedPermissions().entries()).map(([moduleId, permission]) => ({
@@ -93,13 +95,13 @@ export class RoleManagerService {
             await this.loadRoles();
         } catch (error) {
             this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al crear rol' });
-            console.error('Error al crear rol', error);
+            console.error('Error creating role:', error);
         } finally {
             this.isSaving.set(false);
         }
     }
 
-    async updateRole(role: any) {
+    async updateRole(role: RoleDto) {
         this.isSaving.set(true);
         try {
             const permissions = Array.from(this.selectedPermissions().entries()).map(([moduleId, permission]) => ({
@@ -114,7 +116,7 @@ export class RoleManagerService {
             await this.loadRoles();
         } catch (error) {
             this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al actualizar rol' });
-            console.error('Error al actualizar rol', error);
+            console.error('Error updating role:', error);
         } finally {
             this.isSaving.set(false);
         }
