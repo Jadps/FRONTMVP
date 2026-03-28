@@ -2,8 +2,6 @@ import { inject, Injectable, signal } from '@angular/core';
 import { HttpClient, HttpContext } from '@angular/common/http';
 import { BehaviorSubject, catchError, map, Observable, of, switchMap, tap } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { SILENCE_ERRORS } from '../interceptors/http-context.tokens';
-
 import { UserDto } from '../models/user.dto';
 import { LoginDto } from '../models/auth.dto';
 
@@ -37,7 +35,7 @@ export class AuthService {
     }
 
     refreshToken(): Observable<boolean> {
-        return this.http.post(`${environment.apiUrl}/auth/refresh-token`, {}, { withCredentials: true }).pipe(
+        return this.http.post<any>(`${environment.apiUrl}/auth/refresh-token`, {}, { withCredentials: true }).pipe(
             map(() => true),
             catchError(() => {
                 this.clearSession();

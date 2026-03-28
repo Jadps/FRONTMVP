@@ -1,8 +1,9 @@
 import { Injectable, inject, signal } from '@angular/core';
-import { HttpClient, HttpXsrfTokenExtractor } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import * as signalR from '@microsoft/signalr';
 import { environment } from '../../../environments/environment';
 import { MessageService } from 'primeng/api';
+import { AuthService } from './auth.service';
 
 export type ReportStatus = 'Idle' | 'Processing' | 'Ready';
 
@@ -11,8 +12,8 @@ export type ReportStatus = 'Idle' | 'Processing' | 'Ready';
 })
 export class ReportsSignalrService {
   private http = inject(HttpClient);
-  private xsrfTokenExtractor = inject(HttpXsrfTokenExtractor);
   private messageService = inject(MessageService);
+  private authService = inject(AuthService);
   private hubConnection: signalR.HubConnection | null = null;
 
   public reportStatus = signal<ReportStatus>('Idle');
@@ -22,14 +23,9 @@ export class ReportsSignalrService {
   }
 
   private startConnection() {
-    const token = this.xsrfTokenExtractor.getToken() || '';
-
     this.hubConnection = new signalR.HubConnectionBuilder()
       .withUrl(`${environment.apiUrl.replace('/api/v1.0', '')}/hubs/reports`, {
-        withCredentials: true,
-        headers: {
-          'X-XSRF-TOKEN': token
-        }
+        withCredentials: true
       })
       .withAutomaticReconnect()
       .build();
