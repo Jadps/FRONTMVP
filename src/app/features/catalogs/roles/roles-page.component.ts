@@ -2,10 +2,13 @@ import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/cor
 import { CommonModule } from '@angular/common';
 import { RoleManagerService } from './role-manager.service';
 import { RoleFormDialogComponent } from './role-form-dialog.component';
+import { RoleDto } from '../../../core/models/role.dto';
 
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { TagModule } from 'primeng/tag';
+import { SkeletonModule } from 'primeng/skeleton';
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
     selector: 'app-roles-page',
@@ -17,6 +20,8 @@ import { TagModule } from 'primeng/tag';
         TableModule,
         ButtonModule,
         TagModule,
+        SkeletonModule,
+        TooltipModule,
         RoleFormDialogComponent
     ]
 })
@@ -31,7 +36,7 @@ export class RolesPageComponent implements OnInit {
         this.manager.openNewRoleDialog();
     }
 
-    onEdit(role: any) {
+    onEdit(role: RoleDto) {
         this.manager.openEditRoleDialog(role);
     }
 }
