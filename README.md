@@ -1,9 +1,3 @@
-
----
-
-## Frontend `README.md`
-
-```md
 # MVP Frontend
 
 Frontend SPA for the MVP system.
