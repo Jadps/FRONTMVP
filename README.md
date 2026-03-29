@@ -10,10 +10,6 @@ Built with Angular and kept deliberately simple: components handle UI, services 
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?style=flat&logo=typescript&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/TailwindCSS-4-06B6D4?style=flat&logo=tailwindcss&logoColor=white)
 ![PrimeNG](https://img.shields.io/badge/PrimeNG-UI-00C853?style=flat)
-
-![Build Status](https://img.shields.io/github/actions/workflow/status/Jadps/BACKMVP/frontend.yml?branch=main&style=flat)
-![Coverage](https://img.shields.io/codecov/c/github/Jadps/BACKMVP?style=flat)
-![Version](https://img.shields.io/github/v/tag/Jadps/BACKMVP?style=flat)
 ![License](https://img.shields.io/github/license/Jadps/BACKMVP?style=flat)
 
 ## Structure
