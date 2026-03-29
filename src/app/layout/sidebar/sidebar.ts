@@ -28,9 +28,10 @@ export class Sidebar implements OnInit {
   constructor() {
     effect(() => {
       const user = this.authService.currentUser();
-      if (user) {
+      const menuEmpty = this.menuService.menuItems().length === 0;
+      if (user && menuEmpty) {
         this.loadMenu();
-      } else {
+      } else if (!user) {
         this.menuItems.set([]);
       }
     });

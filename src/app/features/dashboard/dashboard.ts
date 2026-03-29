@@ -25,6 +25,6 @@ export class DashboardComponent {
   }
 
   public generateReport() {
-    this.reportsSignalr.generateReport();
+    this.reportsSignalr.generateReport('MonthlySummary');
   }
 }

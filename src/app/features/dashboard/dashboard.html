@@ -62,7 +62,8 @@
     </div>
 
     @if (isAdmin) {
-    <div class="p-6 rounded-3xl glass-dark border-blue-500/30 bg-blue-500/5 flex items-center justify-between transition-all">
+    <div
+        class="p-6 rounded-3xl glass-dark border-blue-500/30 bg-blue-500/5 flex items-center justify-between transition-all">
         <div>
             <h3 class="text-xl font-bold text-zinc-900 dark:text-white flex items-center gap-2">
                 <i class="pi pi-cog"></i> Admin Tools
@@ -71,17 +72,15 @@
         </div>
         <div class="flex items-center gap-4">
             @if (reportsSignalr.reportStatus() !== 'Idle') {
-                <span class="text-sm font-medium" 
-                      [ngClass]="{'text-blue-500 animate-pulse': reportsSignalr.reportStatus() === 'Processing', 'text-emerald-500': reportsSignalr.reportStatus() === 'Ready'}">
-                    {{ reportsSignalr.reportStatus() === 'Processing' ? 'Generando en segundo plano...' : '¡Reporte Listo!' }}
-                </span>
+            <span class="text-sm font-medium"
+                [ngClass]="{'text-blue-500 animate-pulse': reportsSignalr.reportStatus() === 'Processing', 'text-emerald-500': reportsSignalr.reportStatus() === 'Ready'}">
+                {{ reportsSignalr.reportStatus() === 'Processing' ? 'Generando en segundo plano...' : '¡Reporte Listo!'
+                }}
+            </span>
             }
 
-            <p-button 
-                label="Generar Reporte" 
-                icon="pi pi-chart-pie"
-                [loading]="reportsSignalr.reportStatus() === 'Processing'"
-                (onClick)="generateReport()">
+            <p-button label="Generar Reporte" icon="pi pi-chart-pie"
+                [loading]="reportsSignalr.reportStatus() === 'Processing'" (onClick)="generateReport()">
             </p-button>
         </div>
     </div>
@@ -123,6 +122,4 @@
         <p class="text-zinc-500 animate-pulse font-medium">Sincronizando datos...</p>
     </div>
     }
-
-    <p-toast></p-toast>
 </div>

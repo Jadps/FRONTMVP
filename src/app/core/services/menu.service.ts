@@ -1,7 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { CatalogService } from './catalog.service';
 import { ModuleDto } from '../models/module.dto';
-import { tap } from 'rxjs';
+import { tap, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +13,15 @@ export class MenuService {
 
   loadMenu() {
     return this.catalogService.getMenuModules().pipe(
-      tap(modules => this.menuItems.set(modules))
+      tap(modules => {
+        this.menuItems.set(modules);
+      })
     );
+  }
+
+  /** Call this after a role's permissions change to force a fresh fetch on the next navigation. */
+  invalidate() {
+    this.menuItems.set([]);
   }
 
   getAllowedUrls(): string[] {

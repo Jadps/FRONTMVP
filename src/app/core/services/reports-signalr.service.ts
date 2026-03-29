@@ -2,8 +2,9 @@ import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import * as signalR from '@microsoft/signalr';
 import { environment } from '../../../environments/environment';
-import { MessageService } from 'primeng/api';
 import { AuthService } from './auth.service';
+import { LoadingService } from './loading.service';
+import { NotificationService } from './notification.service';
 
 export type ReportStatus = 'Idle' | 'Processing' | 'Ready';
 
@@ -12,8 +13,9 @@ export type ReportStatus = 'Idle' | 'Processing' | 'Ready';
 })
 export class ReportsSignalrService {
   private http = inject(HttpClient);
-  private messageService = inject(MessageService);
+  private notificationService = inject(NotificationService);
   private authService = inject(AuthService);
+  private loadingService = inject(LoadingService);
   private hubConnection: signalR.HubConnection | null = null;
 
   public reportStatus = signal<ReportStatus>('Idle');
@@ -24,7 +26,7 @@ export class ReportsSignalrService {
 
   private startConnection() {
     this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl(`${environment.apiUrl.replace('/api/v1.0', '')}/hubs/reports`, {
+      .withUrl(`${environment.hubUrl}/reports`, {
         withCredentials: true
       })
       .withAutomaticReconnect()
@@ -43,12 +45,9 @@ export class ReportsSignalrService {
 
     this.hubConnection.on('ReportReady', (data: { reportType: string, completedAt: string, fileUrl?: string }) => {
       this.reportStatus.set('Ready');
+      this.loadingService.hide();
 
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Report Ready',
-        detail: `Your ${data.reportType} is ready!`
-      });
+      this.notificationService.success('Report Ready', `Your ${data.reportType} is ready!`);
 
       if (data.fileUrl) {
         window.open(data.fileUrl, '_blank');
@@ -58,25 +57,19 @@ export class ReportsSignalrService {
     });
   }
 
-  public generateReport() {
+  public generateReport(reportType: string = 'MonthlySummary') {
     this.reportStatus.set('Processing');
-    this.messageService.add({
-      severity: 'info',
-      summary: 'Processing',
-      detail: 'Requesting report to backend Worker...'
-    });
+    this.loadingService.show();
+    this.notificationService.info('Processing', `Requesting ${reportType} to backend Worker...`);
 
-    this.http.post(`${environment.apiUrl}/reports/generate`, {}, { withCredentials: true })
+    this.http.post(`${environment.apiUrl}/reports/generate`, { reportType }, { withCredentials: true })
       .subscribe({
         next: () => {
         },
         error: (err) => {
           this.reportStatus.set('Idle');
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: 'Failed to request the report.'
-          });
+          this.loadingService.hide();
+          this.notificationService.error('Error', 'Failed to request the report.');
         }
       });
   }

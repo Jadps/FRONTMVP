@@ -81,9 +81,10 @@ import { ModuleDto } from '../../../core/models/module.dto';
                                             [binary]="true" 
                                             [ngModel]="getPermission(rowData.id) >= 2" 
                                             [ngModelOptions]="{standalone: true}"
+                                            [disabled]="rowData.moduleTypeId === 1"
                                             (onChange)="toggle(rowData.id, 2)">
                                         </p-checkbox>
-                                        <span class="text-xs text-gray-500">Escritura</span>
+                                        <span class="text-xs text-gray-500" [class.opacity-50]="rowData.moduleTypeId === 1">Escritura</span>
                                     </div>
                                 </td>
                                 <td class="text-center w-24">
@@ -92,9 +93,10 @@ import { ModuleDto } from '../../../core/models/module.dto';
                                             [binary]="true" 
                                             [ngModel]="getPermission(rowData.id) >= 3" 
                                             [ngModelOptions]="{standalone: true}"
+                                            [disabled]="rowData.moduleTypeId === 1"
                                             (onChange)="toggle(rowData.id, 3)">
                                         </p-checkbox>
-                                        <span class="text-xs text-gray-500">Admin</span>
+                                        <span class="text-xs text-gray-500" [class.opacity-50]="rowData.moduleTypeId === 1">Admin</span>
                                     </div>
                                 </td>
                             </tr>
@@ -179,6 +181,7 @@ export class RoleFormDialogComponent {
             data: {
                 id: m.id,
                 description: m.description,
+                moduleTypeId: m.moduleTypeId
             },
             children: m.subModules ? this.buildTree(m.subModules) : [],
             expanded: true

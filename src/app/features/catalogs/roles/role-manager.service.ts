@@ -5,6 +5,7 @@ import { environment } from '../../../../environments/environment';
 import { MessageService } from 'primeng/api';
 import { RoleDto } from '../../../core/models/role.dto';
 import { ModuleDto } from '../../../core/models/module.dto';
+import { MenuService } from '../../../core/services/menu.service';
 
 @Injectable({
     providedIn: 'root'
@@ -12,6 +13,7 @@ import { ModuleDto } from '../../../core/models/module.dto';
 export class RoleManagerService {
     private readonly http = inject(HttpClient);
     private readonly messageService = inject(MessageService);
+    private readonly menuService = inject(MenuService);
     private readonly apiUrl = `${environment.apiUrl}/catalogs`;
 
     readonly roles = signal<RoleDto[]>([]);
@@ -92,6 +94,7 @@ export class RoleManagerService {
             await firstValueFrom(this.http.post(`${this.apiUrl}/roles`, { ...role, permissions }, { withCredentials: true }));
             this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Rol creado correctamente' });
             this.closeDialog();
+            this.menuService.invalidate();
             await this.loadRoles();
         } catch (error) {
             this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al crear rol' });
@@ -113,6 +116,7 @@ export class RoleManagerService {
             await firstValueFrom(this.http.put(`${this.apiUrl}/roles`, rolePayload, { withCredentials: true }));
             this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Rol actualizado correctamente' });
             this.closeDialog();
+            this.menuService.invalidate();
             await this.loadRoles();
         } catch (error) {
             this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al actualizar rol' });
