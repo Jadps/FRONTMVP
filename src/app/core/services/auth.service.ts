@@ -4,6 +4,7 @@ import { BehaviorSubject, catchError, map, Observable, of, switchMap, tap } from
 import { environment } from '../../../environments/environment';
 import { UserDto } from '../models/user.dto';
 import { LoginDto } from '../models/auth.dto';
+import { MenuService } from './menu.service';
 
 @Injectable({
     providedIn: 'root'
@@ -14,6 +15,7 @@ export class AuthService {
     public isRefreshing = signal<boolean>(false);
     public refreshTokenSubject = new BehaviorSubject<boolean | null>(null);
     private readonly http = inject(HttpClient);
+    private readonly menuService = inject(MenuService);
 
     isAuthenticatedHint(): boolean {
         return localStorage.getItem(this.AUTH_STATUS_KEY) === 'loggedIn';
@@ -60,6 +62,7 @@ export class AuthService {
     clearSession(): void {
         localStorage.setItem(this.AUTH_STATUS_KEY, 'loggedOut');
         this.currentUser.set(null);
+        this.menuService.invalidate();
     }
 
     getProfile(): Observable<boolean> {
